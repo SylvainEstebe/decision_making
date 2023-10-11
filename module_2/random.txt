@@ -1,0 +1,13 @@
+model {
+
+  # 
+  b[1] ~ dunif(0,1)
+  b[2] ~ dunif(0,1)
+
+  for (t in 1:ntrials) {
+
+    x[t] ~ dcat(b)
+    
+  }
+
+}
