@@ -37,5 +37,73 @@ b <- c(theta, 1-theta) # stated in terms of our categorical choice probabilities
 source("random.R") # NB! working directory
 random_sims <- random(payoff, ntrials, b)
 
+a <- 0.05
+beta <- 0.05
+source("RW.R")
+random_sims <- random(payoff, ntrials, a, beta)
+
+##### fit data to model #####
+x <- random_sims$x
+
+data <- list("x", "ntrials")
+
+params <- c("b")
+
+samples <- jags(data, inits=NULL, params,
+                model.file = "random.txt",
+                n.chains = 3, n.iter = 5000, n.burnin = 1000, n.thin=1)
+
+X <- samples$BUGSoutput$sims.list
+leftBias <- X$b[,1]
+rightBias <- X$b[,2]
+
+par(mfrow=c(2,1))
+plot(density(leftBias))
+plot(density(rightBias))
+
+### NOW: FULL THROTTLE
+niterations <- 100
+true_theta <- array(0, c(niterations))
+infer_b1 <- array(0, c(niterations))
+infer_b2 <- array(0, c(niterations))
+infer_theta <- array(0, c(niterations))
+
+for (i in 1:niterations) {
+  
+  theta <- runif(1,0,1)
+  b <- c(theta, 1-theta)
+  
+  random_sims <- random(payoff, ntrials, b)
+  
+  x <- random_sims$x
+  
+  data <- list("x", "ntrials")
+  
+  params <- c("b", "theta")
+  
+  samples <- jags(data, inits=NULL, params,
+                  model.file = "random.txt",
+                  n.chains = 3, n.iter = 5000, n.burnin = 1000, n.thin=1)
+  
+  true_theta[i] <- theta
+  
+  X <- samples$BUGSoutput$sims.list
+  
+  infer_b1[i] <- MPD(X$b[,1])
+  infer_b2[i] <- MPD(X$b[,2])
+  infer_theta[i] <- MPD(X$theta)
+  
+}
+
+par(mfrow=c(2,2))
+plot(true_theta, infer_b1)
+plot(1-true_theta, infer_b2)
+plot(infer_b1, infer_b2)
+plot(true_theta, infer_theta)
+
+                
+
+
+
 
 

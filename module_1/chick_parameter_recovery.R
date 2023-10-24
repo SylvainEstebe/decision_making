@@ -4,7 +4,7 @@ install.packages("R2jags")
 library(R2jags)
 
 set.seed(1983) # plz try with a seed of your own choice
-
+setwd("~/Documents/git_repository/decision_making/module_1")
 # setwd({your_path})
 
 # defining a function for calculating the maximum of the posterior density (not exactly the same as the mode)
@@ -15,7 +15,7 @@ MPD <- function(x) {
 
 #----- Model 1: fixed theta-------
 
-nruns <- 100 # consider only running 20 if you don't wanna wait too long to have a glance at the output
+nruns <- 20 # consider only running 20 if you don't wanna wait too long to have a glance at the output
 ntrials <- 100
 
 trueTheta <- c(NA,nruns) # array for logging the true theta

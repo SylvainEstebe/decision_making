@@ -15,7 +15,6 @@ theta <- 0.7
 for (t in 1:ntrials) {
   Gfixed[t] <- rbinom(1,1,theta)
 }
-
 plot(Gfixed)
 
 
@@ -26,7 +25,7 @@ ntrials <- 100
 Glearn <- array(NA, c(ntrials))
 
 theta_learn <- array(NA, c(ntrials))
-alpha <- 0.05
+alpha <- 0.01
 theta1 <- 0.5
 
 theta_learn[1] <- theta1

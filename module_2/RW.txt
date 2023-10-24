@@ -1,0 +1,31 @@
+model {
+
+  a ~ dunif(0,1)
+  beta ~ dgamma(1,1)
+
+  #set priors for initial values of Q
+  Q[1,1] ~ dnorm(0,0.01)
+  Q[1,2] ~ dnorm(0,0.01)
+  
+  for (t in 2:ntrials) {
+    
+    for (k in 1:2) {
+    
+      #update utility for chosen option only, with reward on last trial
+      #unchosen option stays same
+      Qupdate[t,k] <- Q[t-1,k] + (a*(r[t-1]-Q[t-1,k]))
+      Q[t,k] <- ifelse(k==x[t-1],Qupdate[t,k],Q[t-1,k])
+      
+      exp_p[t,k] <- exp(beta*Q[t,k])
+    }
+
+    for (k in 1:2) {
+      p[t,k] <- exp_p[t,k]/sum(exp_p[t,])
+    }
+    
+    x[t] ~ dcat(p[t,])
+    
+  }
+
+
+}

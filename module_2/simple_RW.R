@@ -4,7 +4,7 @@
 
 # rates - must be from 0 - 1  
 alphaA <- 1 # play with this to change the saliency of the conditioned stimulus (CS, e.g. sound)
-beta <- .2 # play with this to change the learning rate, i.e. the saliency of the unconditioned stimulus (US, e.g. blink reflex from airpuff)
+beta <- 1 # play with this to change the learning rate, i.e. the saliency of the unconditioned stimulus (US, e.g. blink reflex from airpuff)
 
 ntrials <-  100
 lambda <- 1

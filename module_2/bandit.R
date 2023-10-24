@@ -26,7 +26,5 @@ theta <- .7 # bias for one bandit over the other
 b <- c(theta, 1-theta) # stated in terms of our categorical choice probabilities
 
 # Don't forget to set your working directory
-#setwd("Where/Are/My/Files")
-
 source("random.R") # NB! working directory
 random_sims <- random(payoff, ntrials, b)
